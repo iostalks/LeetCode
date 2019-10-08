@@ -7,8 +7,9 @@
  * @param {string} s
  * @return {string}
  */
+
+ // Time: O(n^2)
 var longestPalindrome = function(s) {
-    return longestPalindrome2(s);
     // 检测字符串 s 是否是回文
     const isPalindrome = (s) => {
         for (let i = 0, len = s.length; i < parseInt(len/2); ++i) {
@@ -33,10 +34,12 @@ var longestPalindrome = function(s) {
     return longestPal;
 };
 
+// Time: O(n*m)
 var longestPalindrome2 = function(s) {
     const len = s.length;
     let start = maxLen = 0;
 
+    // 最长回文探测
     const palindromeDetect = (s, left, right) => {
         while (left >= 0 && right < len && s.charAt(left) === s.charAt(right)) {
             left--;
