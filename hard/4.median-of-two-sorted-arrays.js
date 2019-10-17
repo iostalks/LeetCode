@@ -51,50 +51,60 @@ var findMedianSortedArrays = function(nums1, nums2) {
 };
 
 var median = function(A, B) {
-    let m = A.length;
-    let n = B.length;
-    if (m > n) {
-        [m, n, A, B] = [n, m, B, A];
+  let m = A.length;
+  let n = B.length;
+  if (m > n) {
+      // 保证 n > m
+    [m, n, A, B] = [n, m, B, A];
+  }
+
+  let imin = 0;
+  let imax = m;
+  // +1 是为了保证在 m+n 为奇数时，i-1 为中位数
+  let medianLen = Math.floor((m + n + 1) / 2);
+
+  let leftMax;
+  let rightMin;
+  // 在[0, m]中进行二分
+  while (imin <= imax) {
+    const i = Math.floor((imax + imin) / 2);
+    const j = medianLen - i;
+    if (i < m && B[j - 1] > A[i]) {
+      // i 过小
+      imin = i + 1;
+    } else if (i > 0 && A[i - 1] > B[j]) {
+      // i 过大
+      imax = i - 1;
+    } else {
+      // 此时满足 B[j-1] <= A[i] & A[i-1] <= B[j]
+      // 但还需要考虑 i=0/j=0/i=m/j=n 四种特殊情况
+      
+      // 如果总数为奇数个，只需要考虑 i、j 左边的最大值
+      // 如果 i j 取值在边界，则考虑一边即可
+      if (i == 0) {
+        leftMax = B[j - 1];
+      } else if (j == 0) {
+        leftMax = A[i - 1]
+      } else {
+        leftMax = Math.max(A[i - 1], B[j - 1]);
+      }
+      if ((m + n) % 2 == 1) {
+        return leftMax;
+      }
+
+      // 总数为偶数个时，需要计算 i、j，左边的最大值和右边的最小值的平均值
+      // 如果 i j 取值在边界，则考虑一边即可
+      if (i == m) {
+        rightMin = B[j];
+      } else if (j == n) {
+        rightMin = A[i];
+      } else {
+        rightMin = Math.min(A[i], B[j]);
+      }
+
+      return (rightMin + leftMax) / 2;
     }
-
-    let imin = 0;
-    let imax = m;
-    let medianLen = Math.floor((m + n + 1) / 2);
-
-    let leftMax;
-    let rightMin;
-    while (imin <= imax) {
-        const i = Math.floor((imax + imin) / 2);
-        const j = medianLen - i;
-        if (i < m && B[j - 1] > A[i]) {
-            // i 过小
-            imin = i + 1;
-        } else if (i > 0 && A[i - 1] > B[j]) {
-            // i 过大
-            imax = i - 1;
-        } else {
-            if (i == 0) {
-                leftMax = B[j - 1];
-            } else if (j == 0) {
-                leftMax = A[i - 1]
-            } else {
-                leftMax = Math.max(A[i - 1], B[j - 1]);
-            }
-            if ((m + n) % 2 == 1) {
-                return leftMax;
-            }
-
-            if (i == m) {
-                rightMin = B[j];
-            } else if (j == n) {
-                rightMin = A[i];
-            } else {
-                rightMin = Math.min(A[i], B[j]);
-            }
-
-            return (rightMin + leftMax) / 2
-        }
-    }
+  }
 }
 // @lc code=end
 
