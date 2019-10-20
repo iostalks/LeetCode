@@ -11,7 +11,7 @@
  * @return {number}
  */
 var search = function(nums, target) {
-    return search3(nums, target);
+    return search2(nums, target);
     const len = nums.length;
     if (!len) return -1;
 
@@ -66,7 +66,7 @@ var search2 = function(nums, target) {
 }
 
 var search3 = function(nums, target) {
-    let low = 0, high = nums.length - 1; 
+    let low = 0, high = nums.length - 1;
 
     const binarySearch = (nums, low, high, target) => {
         const mid = ~~((low + high)/2)
@@ -83,7 +83,7 @@ var search3 = function(nums, target) {
     }
 
     const binarySearchRotated = (nums, low, high, target) => {
-        return -1;
+        const mid = ~~((low + high) / 2)
     }
 
     return binarySearchRotated(nums, low, high, target);
