@@ -10,6 +10,7 @@
  * @return {boolean}
  */
 var parseBoolExpr = function(expression) {
+    return parseBoolExpr2(expression);
     const and = (...args) => {
         return args.reduce((res, cur) => res && cur, true);
     }
@@ -24,5 +25,29 @@ var parseBoolExpr = function(expression) {
 
     return eval(e);
 };
+var parseBoolExpr2 = function(expression) {
+    const stack = [];
+    expression.split('').forEach(c => {
+        if (c === ')') {
+            const set = new Set();
+            while (stack[stack.length - 1] !== '(') {
+                set.add(stack.pop());
+            }
+            stack.pop();
+            const operator = stack.pop();
+            if (operator === '&' ) {
+                stack.push(set.has('f') ? 'f' : 't');
+            } else if (operator === '|') {
+                stack.push(set.has('t') ? 't' : 'f');
+            } else if (operator === '!') {
+                stack.push(set.has('t') ? 'f' : 't');
+            }
+        } else if (c !== ',') {
+            stack.push(c);
+        }
+    });
+    return stack.pop() === 't';
+}
+
 // @lc code=end
 
