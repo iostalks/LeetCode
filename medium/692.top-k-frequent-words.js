@@ -12,14 +12,15 @@
  */
 var topKFrequent = function(words, k) {
     const map = {}; 
-    let maxCount = 0;
+    // let maxCount = 0;
     words.forEach((word) => {
         const newCount = (map[word] || 0) + 1;
         map[word] = newCount;
-        maxCount = Math.max(maxCount, newCount);
+        // maxCount = Math.max(maxCount, newCount);
     });
 
-    const buckets = new Array(maxCount);
+    // const buckets = new Array(maxCount);
+    const buckets = []
     Object.keys(map).forEach(word => {
         const index = map[word] - 1; // count - 1
         const aBucket = buckets[index] || [];
